@@ -8,6 +8,8 @@ contract FundraiserFactory {
 
   event FundraiserCreated(Fundraiser indexed fundraiser, address indexed owner);
 
+  uint256 constant maxLimit = 20;
+
   function fundraisersCount() public view returns(uint256) {
     return _fundraisers.length;
   }
@@ -33,9 +35,16 @@ contract FundraiserFactory {
   }
 
   // uint256 limit, uint256 offset
-  function fundraisers(uint256 limit) public  view returns(Fundraiser[] memory coll) {
+  function fundraisers(uint256 limit, uint256 offset) public  view returns(Fundraiser[] memory coll) {
+    require(offset <= fundraisersCount(), "Out of bound");
+
     uint256 size = fundraisersCount() < limit ? fundraisersCount() : limit;
+    size = size < maxLimit ? size : maxLimit;
     coll = new Fundraiser[](size);
+
+    for(uint256 i = 0; i < size; i++) {
+      coll[i] = _fundraisers[i];
+    }
 
     return coll;
   } 

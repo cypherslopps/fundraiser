@@ -131,5 +131,5 @@ contract("FundraiserFactory: fundraisers", accounts => {
         "results size should be 20"
       );
     });
-  })
+  });
 });
